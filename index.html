@@ -3,11 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PVP INDIA | Minecraft PvP Rankings</title>
+<title>PVP INDIA | Competitive Minecraft PvP Network</title>
 <meta name="description" content="PVP INDIA - Minecraft PvP rankings, player tiers, events and leaderboards.">
-<link rel="icon" href="tier.webp">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -15,13 +17,15 @@
 
 <style>
 :root {
-    --bg: #050505;
-    --panel: #101010;
-    --panel2: #151515;
-    --gold: #e9b84c;
-    --gold2: #fff0a8;
-    --muted: #929292;
-    --border: rgba(233,184,76,.19);
+    --bg: #08090b;
+    --panel: #111316;
+    --panel2: #171a1e;
+    --red: #f04452;
+    --red2: #ff7b84;
+    --white: #f5f6f8;
+    --muted: #9299a3;
+    --border: rgba(255,255,255,.09);
+    --blue: #45aaff;
 }
 
 * {
@@ -30,9 +34,13 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     background: var(--bg);
-    color: #fff;
+    color: var(--white);
     font-family: Inter, sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
@@ -42,11 +50,11 @@ body::before {
     content: "";
     position: fixed;
     inset: 0;
+    z-index: -2;
     pointer-events: none;
-    z-index: -1;
     background:
-        radial-gradient(ellipse at 50% 0%, rgba(0,123,255,.05), transparent 48%),
-        radial-gradient(ellipse at 90% 90%, rgba(0,123,255,.05), transparent 40%);
+        radial-gradient(ellipse at 75% 10%,rgba(30,110,190,.10),transparent 40%),
+        radial-gradient(ellipse at 10% 55%,rgba(240,68,82,.055),transparent 40%);
 }
 
 button {
@@ -54,15 +62,20 @@ button {
     cursor: pointer;
 }
 
+button:focus-visible {
+    outline: 2px solid var(--red);
+    outline-offset: 4px;
+}
+
 .navbar {
-    height: 76px;
+    height: 78px;
     padding: 0 7%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid var(--border);
-    background: rgba(5,5,5,.88);
-    backdrop-filter: blur(18px);
+    background: rgba(8,9,11,.88);
+    backdrop-filter: blur(22px);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -70,11 +83,12 @@ button {
 
 .logo {
     font-family: Orbitron, sans-serif;
-    font-size: 21px;
+    font-size: 22px;
     font-weight: 900;
     letter-spacing: 2px;
-    color: var(--gold);
-    text-shadow: 0 0 20px rgba(233,184,76,.3);
+    color: var(--red);
+    text-shadow: 0 0 22px rgba(240,68,82,.3);
+    white-space: nowrap;
 }
 
 .logo span {
@@ -84,33 +98,33 @@ button {
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 35px;
+    gap: 34px;
 }
 
 .nav-links button {
     border: 0;
     background: none;
-    color: #aaa;
-    font-weight: 700;
-    font-size: 13px;
-    transition: .25s;
+    color: #aeb3bb;
+    font-size: 12px;
+    font-weight: 800;
+    transition: .3s;
     position: relative;
 }
 
 .nav-links button:hover,
 .nav-links button.active {
-    color: var(--gold);
+    color: white;
 }
 
 .nav-links button.active::after {
     content: "";
     height: 2px;
     position: absolute;
-    bottom: -12px;
+    bottom: -13px;
     left: 0;
     right: 0;
-    background: var(--gold);
-    box-shadow: 0 0 12px var(--gold);
+    background: var(--red);
+    box-shadow: 0 0 14px var(--red);
 }
 
 .header-right {
@@ -123,33 +137,40 @@ button {
     border: 1px solid var(--border);
     border-radius: 30px;
     padding: 9px 14px;
-    color: #ccc;
-    font-size: 11px;
+    color: #c8cbd0;
+    font-size: 10px;
+    font-weight: 800;
 }
 
 .online-dot {
     display: inline-block;
     width: 7px;
     height: 7px;
-    background: #42e58c;
+    background: #4de49a;
     border-radius: 50%;
     margin-right: 7px;
-    box-shadow: 0 0 10px #42e58c;
+    box-shadow: 0 0 10px #4de49a;
 }
 
 .login-btn {
-    padding: 10px 17px;
-    background: var(--gold);
-    color: #080808;
-    border: 0;
+    padding: 11px 18px;
+    background: var(--red);
+    color: white;
+    border: 1px solid var(--red);
     border-radius: 5px;
     font-weight: 900;
-    font-size: 11px;
+    font-size: 10px;
+    transition: .25s;
+}
+
+.login-btn:hover {
+    background: transparent;
+    box-shadow: 0 0 20px rgba(240,68,82,.2);
 }
 
 .page {
     display: none;
-    animation: pageIn .4s ease;
+    animation: pageIn .45s ease;
 }
 
 .page.active {
@@ -157,17 +178,19 @@ button {
 }
 
 @keyframes pageIn {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(12px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
 .container {
-    width: min(1160px, 90%);
+    width: min(1180px, 90%);
     margin: auto;
 }
 
+/* HERO */
+
 .hero {
-    min-height: 570px;
+    min-height: 590px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
@@ -176,31 +199,33 @@ button {
 }
 
 .eyebrow {
-    color: var(--gold);
+    color: var(--red);
     font-family: Orbitron, sans-serif;
-    font-size: 11px;
+    font-size: 10px;
     letter-spacing: 4px;
     margin-bottom: 22px;
+    font-weight: 800;
 }
 
 .hero h1 {
     font-family: Orbitron, sans-serif;
-    font-size: clamp(38px, 6vw, 75px);
+    font-size: clamp(40px, 6vw, 76px);
     line-height: 1.08;
     font-weight: 900;
+    letter-spacing: -2px;
 }
 
 .hero h1 span {
-    color: var(--gold);
-    text-shadow: 0 0 30px rgba(233,184,76,.25);
+    color: var(--red);
+    text-shadow: 0 0 30px rgba(240,68,82,.3);
 }
 
 .hero-description {
-    color: #999;
+    color: var(--muted);
     line-height: 1.9;
     max-width: 480px;
-    margin: 22px 0 30px;
-    font-size: 14px;
+    margin: 23px 0 30px;
+    font-size: 13px;
 }
 
 .hero-actions {
@@ -213,63 +238,77 @@ button {
 .secondary-btn {
     border-radius: 5px;
     padding: 14px 22px;
-    font-weight: 800;
-    font-size: 12px;
-    transition: .25s;
+    font-weight: 900;
+    font-size: 11px;
+    transition: .3s;
 }
 
 .primary-btn {
-    background: var(--gold);
-    color: #080808;
-    border: 1px solid var(--gold);
+    background: var(--red);
+    color: white;
+    border: 1px solid var(--red);
 }
 
 .secondary-btn {
-    background: transparent;
+    background: rgba(255,255,255,.025);
     color: white;
     border: 1px solid var(--border);
 }
 
 .primary-btn:hover {
-    box-shadow: 0 0 25px rgba(233,184,76,.3);
+    box-shadow: 0 0 28px rgba(240,68,82,.35);
     transform: translateY(-3px);
 }
 
 .secondary-btn:hover {
-    border-color: var(--gold);
-    color: var(--gold);
+    border-color: var(--red);
+    color: var(--red2);
+    transform: translateY(-3px);
 }
+
+/* 3D EARTH */
 
 .earth-wrap {
     position: relative;
-    height: 430px;
+    height: 450px;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: radial-gradient(circle,rgba(25,115,205,.13),transparent 65%);
 }
 
 #earthCanvas {
     width: 100%;
     height: 100%;
     display: block;
+    position: relative;
+    z-index: 2;
 }
 
 .earth-glow {
     position: absolute;
-    width: 270px;
-    height: 270px;
+    width: 260px;
+    height: 260px;
     border-radius: 50%;
-    background: rgba(233,184,76,.12);
-    filter: blur(75px);
-    z-index: -1;
+    background: rgba(42,145,255,.22);
+    filter: blur(85px);
+    z-index: 0;
+    animation: bluePulse 4s ease-in-out infinite alternate;
 }
+
+@keyframes bluePulse {
+    from { opacity: .5; transform: scale(.9); }
+    to { opacity: 1; transform: scale(1.15); }
+}
+
+/* SECTION HEADINGS */
 
 .section-heading {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 15px;
-    margin: 35px 0 22px;
+    margin: 38px 0 22px;
 }
 
 .section-heading h2 {
@@ -278,81 +317,134 @@ button {
 }
 
 .section-heading h2 span {
-    color: var(--gold);
+    color: var(--red);
 }
 
 .section-heading p {
     color: var(--muted);
     font-size: 11px;
-    margin-top: 7px;
+    margin-top: 8px;
 }
+
+/* STATS */
 
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3,1fr);
     gap: 16px;
-    margin: 20px 0 50px;
+    margin: 20px 0 55px;
 }
 
 .stat-card {
-    padding: 23px;
+    position: relative;
+    overflow: hidden;
+    padding: 25px;
     border: 1px solid var(--border);
-    border-radius: 10px;
-    background: linear-gradient(145deg,#171717,#0b0b0b);
+    border-radius: 9px;
+    background: linear-gradient(145deg,#181b20,#0d0f12);
+    transition: .3s;
+}
+
+.stat-card::after {
+    content: "";
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    right: -40px;
+    top: -40px;
+    border-radius: 50%;
+    background: rgba(240,68,82,.10);
+    filter: blur(30px);
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(240,68,82,.5);
 }
 
 .stat-card i {
-    color: var(--gold);
-    font-size: 19px;
+    color: var(--red);
+    font-size: 20px;
 }
 
 .stat-card h3 {
     font-family: Orbitron, sans-serif;
     font-size: 27px;
-    margin: 14px 0 6px;
+    margin: 15px 0 6px;
 }
 
 .stat-card p {
     color: var(--muted);
-    font-size: 11px;
+    font-size: 10px;
+    letter-spacing: 1px;
 }
+
+/* GAMEMODES */
 
 .modes {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 13px;
-    margin: 22px 0 35px;
+    grid-template-columns: repeat(4,1fr);
+    gap: 14px;
+    margin: 22px 0 38px;
 }
 
 .mode {
+    position: relative;
+    overflow: hidden;
     border: 1px solid var(--border);
-    background: #111;
+    background: linear-gradient(145deg,#171a1e,#101215);
     border-radius: 8px;
-    padding: 18px 10px;
-    color: #ccc;
+    padding: 21px 10px;
+    color: #d0d3d8;
     font-weight: 800;
-    transition: .25s;
+    transition: .3s;
+}
+
+.mode::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--red);
+    box-shadow: 0 0 12px var(--red);
+    transition: .3s;
+    transform: translateX(-50%);
 }
 
 .mode i {
     display: block;
-    font-size: 22px;
-    color: var(--gold);
-    margin-bottom: 11px;
+    font-size: 23px;
+    color: var(--red);
+    margin-bottom: 12px;
+    transition: .3s;
 }
 
 .mode:hover,
 .mode.selected {
-    border-color: var(--gold);
-    color: var(--gold);
-    background: #1c180f;
-    box-shadow: 0 0 20px rgba(233,184,76,.08);
-    transform: translateY(-3px);
+    border-color: rgba(240,68,82,.6);
+    color: white;
+    background: linear-gradient(145deg,#25171b,#141619);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(0,0,0,.25);
 }
+
+.mode:hover::after,
+.mode.selected::after {
+    width: 75%;
+}
+
+.mode:hover i {
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 8px var(--red));
+}
+
+/* LEADERBOARD */
 
 .leaderboard {
     border: 1px solid var(--border);
-    background: rgba(15,15,15,.85);
+    background: rgba(15,17,20,.9);
     border-radius: 10px;
     overflow: hidden;
     margin-bottom: 60px;
@@ -364,25 +456,32 @@ button {
     grid-template-columns: 65px 1.8fr 1fr 1fr 1fr;
     align-items: center;
     gap: 12px;
-    padding: 15px 22px;
+    padding: 16px 22px;
 }
 
 .table-header {
-    color: var(--gold);
+    color: var(--red2);
     font-size: 10px;
     letter-spacing: 1px;
-    background: #17140e;
+    background: #1a1d22;
     font-weight: 900;
 }
 
 .player-row {
-    border-top: 1px solid rgba(255,255,255,.05);
+    border-top: 1px solid rgba(255,255,255,.055);
     cursor: pointer;
-    transition: .2s;
+    transition: .25s;
+    animation: rowIn .4s ease both;
+}
+
+@keyframes rowIn {
+    from { opacity: 0; transform: translateX(-8px); }
+    to { opacity: 1; transform: translateX(0); }
 }
 
 .player-row:hover {
-    background: rgba(233,184,76,.055);
+    background: rgba(240,68,82,.065);
+    transform: translateX(4px);
 }
 
 .player-cell {
@@ -399,29 +498,29 @@ button {
 
 .player-cell small {
     display: block;
-    color: #777;
+    color: #7e858f;
     font-size: 10px;
     margin-top: 4px;
 }
 
 .rank {
-    color: #888;
+    color: #9299a3;
     font-family: Orbitron, sans-serif;
     font-weight: 800;
 }
 
 .rank.first { color: #ffd45e; }
 .rank.second { color: #c4d3df; }
-.rank.third { color: #c68b59; }
+.rank.third { color: #d18d61; }
 
 .tier {
     display: inline-block;
     padding: 7px 10px;
     border-radius: 4px;
-    background: rgba(233,184,76,.12);
-    color: var(--gold);
-    border: 1px solid rgba(233,184,76,.25);
-    font-size: 11px;
+    background: rgba(240,68,82,.10);
+    color: var(--red2);
+    border: 1px solid rgba(240,68,82,.3);
+    font-size: 10px;
     font-weight: 900;
 }
 
@@ -435,44 +534,61 @@ button {
 }
 
 .head-img {
-    width: 39px;
-    height: 39px;
-    border-radius: 50%;
-    border: 2px solid var(--gold);
+    width: 40px;
+    height: 40px;
+    border-radius: 7px;
+    border: 1px solid rgba(240,68,82,.7);
     object-fit: cover;
     image-rendering: pixelated;
-    box-shadow: 0 0 12px rgba(233,184,76,.2);
-    background: #222;
+    box-shadow: 0 0 13px rgba(240,68,82,.13);
+    background: #202328;
+    transition: .3s;
 }
+
+.player-row:hover .head-img {
+    transform: scale(1.1);
+}
+
+/* EVENTS */
 
 .events-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2,1fr);
     gap: 18px;
     margin: 25px 0 60px;
 }
 
 .event-card {
-    padding: 23px;
+    position: relative;
+    overflow: hidden;
+    padding: 25px;
     border: 1px solid var(--border);
     border-radius: 10px;
-    background: linear-gradient(140deg,#17140e,#0d0d0d);
+    background: linear-gradient(140deg,#191c21,#101215);
+    transition: .3s;
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(240,68,82,.55);
+    box-shadow: 0 15px 40px rgba(0,0,0,.2);
 }
 
 .event-card h3 {
     font-family: Orbitron, sans-serif;
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .event-card p {
     color: var(--muted);
     font-size: 11px;
-    margin-top: 8px;
+    line-height: 1.7;
+    margin-top: 9px;
 }
 
 .event-members {
     display: flex;
-    gap: 13px;
+    gap: 15px;
     margin-top: 22px;
 }
 
@@ -483,31 +599,148 @@ button {
 }
 
 .event-member .head-img {
-    width: 53px;
-    height: 53px;
+    width: 49px;
+    height: 49px;
     display: block;
     margin: 0 auto 8px;
-    border-width: 3px;
+    border-width: 2px;
+    border-color: #e5bd64;
+    border-radius: 50%;
+    box-shadow: 0 0 14px rgba(229,189,100,.25);
 }
 
 .event-status {
     display: inline-block;
-    margin-top: 15px;
-    font-size: 10px;
-    color: #5ce69a;
+    margin-top: 17px;
+    font-size: 9px;
+    color: #59e5a0;
     background: rgba(92,230,154,.08);
     border: 1px solid rgba(92,230,154,.2);
-    padding: 6px 10px;
+    padding: 7px 11px;
     border-radius: 20px;
 }
+
+/* SERVER IP */
+
+.server-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 25px;
+    margin: 35px 0 55px;
+    border: 1px solid rgba(240,68,82,.25);
+    border-radius: 10px;
+    background: linear-gradient(110deg,rgba(240,68,82,.09),#14171b 55%);
+}
+
+.server-panel h3 {
+    font-family: Orbitron,sans-serif;
+    font-size: 15px;
+}
+
+.server-panel p {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 7px;
+}
+
+.server-copy {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.server-address {
+    background: #080a0c;
+    border: 1px solid var(--border);
+    padding: 12px 16px;
+    border-radius: 5px;
+    font-family: Orbitron,sans-serif;
+    font-size: 12px;
+    color: #fff;
+}
+
+.copy-btn {
+    padding: 12px 17px;
+    border: 0;
+    border-radius: 5px;
+    background: var(--red);
+    color: white;
+    font-weight: 900;
+    font-size: 10px;
+    transition: .2s;
+}
+
+.copy-btn:hover {
+    box-shadow: 0 0 18px rgba(240,68,82,.35);
+    transform: translateY(-2px);
+}
+
+/* DISCORD */
+
+.discord-section {
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    padding: 55px 25px;
+    margin: 50px 0 65px;
+    border: 1px solid rgba(120,130,255,.22);
+    border-radius: 12px;
+    background:
+        radial-gradient(ellipse at 50% 120%,rgba(88,101,242,.22),transparent 65%),
+        linear-gradient(145deg,#171a24,#101216);
+}
+
+.discord-section i {
+    font-size: 44px;
+    color: #8290ff;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 18px rgba(88,101,242,.4));
+}
+
+.discord-section h2 {
+    font-family: Orbitron,sans-serif;
+    font-size: clamp(20px,3vw,28px);
+}
+
+.discord-section p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.8;
+    max-width: 520px;
+    margin: 14px auto 24px;
+}
+
+.discord-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 22px;
+    background: #5865f2;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 900;
+    transition: .25s;
+}
+
+.discord-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 25px rgba(88,101,242,.4);
+}
+
+/* PROFILE */
 
 .profile-overlay {
     display: none;
     position: fixed;
     inset: 0;
     z-index: 500;
-    background: rgba(0,0,0,.84);
-    backdrop-filter: blur(12px);
+    background: rgba(0,0,0,.86);
+    backdrop-filter: blur(13px);
     align-items: center;
     justify-content: center;
     padding: 20px;
@@ -518,25 +751,25 @@ button {
 }
 
 .profile-modal {
-    width: min(850px, 100%);
+    width: min(850px,100%);
     min-height: 470px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    border: 1px solid rgba(233,184,76,.35);
+    border: 1px solid rgba(240,68,82,.4);
     border-radius: 14px;
-    background: linear-gradient(145deg,#171717,#080808);
+    background: linear-gradient(145deg,#1b1e23,#090a0c);
     overflow: hidden;
-    box-shadow: 0 0 60px rgba(233,184,76,.12);
+    box-shadow: 0 0 70px rgba(240,68,82,.12);
     animation: modalIn .3s ease;
 }
 
 @keyframes modalIn {
-    from { opacity: 0; transform: scale(.95) translateY(15px); }
+    from { opacity: 0; transform: scale(.94) translateY(15px); }
     to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 .skin-container {
-    background: radial-gradient(circle,rgba(233,184,76,.12),transparent 65%);
+    background: radial-gradient(circle,rgba(240,68,82,.12),transparent 65%);
     min-height: 470px;
 }
 
@@ -547,7 +780,7 @@ button {
 }
 
 .profile-details {
-    padding: 55px 30px;
+    padding: 50px 30px;
     align-self: center;
 }
 
@@ -556,13 +789,13 @@ button {
 }
 
 .profile-details h2 {
-    font-family: Orbitron, sans-serif;
+    font-family: Orbitron,sans-serif;
     font-size: clamp(22px,3vw,30px);
     overflow-wrap: anywhere;
 }
 
 .discord-name {
-    color: var(--gold);
+    color: var(--red2);
     font-size: 12px;
     margin-top: 10px;
 }
@@ -582,7 +815,7 @@ button {
 
 .profile-stat {
     padding: 14px;
-    background: #171717;
+    background: #171a1e;
     border: 1px solid var(--border);
     border-radius: 7px;
 }
@@ -590,32 +823,34 @@ button {
 .profile-stat small {
     color: #888;
     display: block;
-    font-size: 10px;
+    font-size: 9px;
     margin-bottom: 8px;
 }
 
 .profile-stat strong {
-    font-family: Orbitron, sans-serif;
-    color: var(--gold);
+    font-family: Orbitron,sans-serif;
+    color: var(--red2);
+    font-size: 13px;
 }
 
 footer {
     border-top: 1px solid var(--border);
     padding: 30px 5%;
     text-align: center;
-    color: #666;
-    font-size: 11px;
+    color: #69717b;
+    font-size: 10px;
+    letter-spacing: 1px;
 }
+
+/* RESPONSIVE */
 
 @media(max-width:750px) {
     .navbar {
-        padding: 0 5%;
+        padding: 13px 5%;
         height: auto;
         min-height: 70px;
         flex-wrap: wrap;
         gap: 12px;
-        padding-top: 13px;
-        padding-bottom: 13px;
     }
 
     .nav-links {
@@ -626,22 +861,44 @@ footer {
         padding: 10px 0 4px;
     }
 
-    .header-right { margin-left: auto; }
-    .online { display: none; }
+    .header-right {
+        margin-left: auto;
+    }
+
+    .online {
+        display: none;
+    }
 
     .hero {
         grid-template-columns: 1fr;
         text-align: center;
-        padding-top: 60px;
+        padding-top: 55px;
     }
 
-    .hero-description { margin-left: auto; margin-right: auto; }
-    .hero-actions { justify-content: center; }
-    .earth-wrap { height: 320px; }
+    .hero-description {
+        margin-left: auto;
+        margin-right: auto;
+    }
 
-    .stats-grid { grid-template-columns: 1fr; }
-    .events-grid { grid-template-columns: 1fr; }
-    .modes { grid-template-columns: repeat(2,1fr); }
+    .hero-actions {
+        justify-content: center;
+    }
+
+    .earth-wrap {
+        height: 330px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .events-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modes {
+        grid-template-columns: repeat(2,1fr);
+    }
 
     .table-header,
     .player-row {
@@ -655,9 +912,33 @@ footer {
         display: none;
     }
 
-    .player-cell { gap: 7px; }
-    .player-cell strong { font-size: 11px; }
-    .head-img { width: 32px; height: 32px; }
+    .player-cell {
+        gap: 7px;
+    }
+
+    .player-cell strong {
+        font-size: 11px;
+    }
+
+    .head-img {
+        width: 32px;
+        height: 32px;
+    }
+
+    .server-panel {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .server-copy {
+        width: 100%;
+    }
+
+    .server-address {
+        flex: 1;
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
 
     .profile-modal {
         grid-template-columns: 1fr;
@@ -666,9 +947,26 @@ footer {
         overflow-y: auto;
     }
 
-    .skin-container { min-height: 300px; }
-    #profileSkin { height: 300px; }
-    .profile-details { padding: 25px; }
+    .skin-container {
+        min-height: 290px;
+    }
+
+    #profileSkin {
+        height: 290px;
+    }
+
+    .profile-details {
+        padding: 25px;
+    }
+}
+
+@media(prefers-reduced-motion:reduce) {
+    *,*::before,*::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+    }
 }
 </style>
 </head>
@@ -689,7 +987,7 @@ footer {
             <span class="online-dot"></span>
             <span id="onlineCount">128</span> ONLINE
         </div>
-        <button class="login-btn" onclick="alert('Login integration can be connected here.')">
+        <button class="login-btn" onclick="alert('Connect your authentication system here.')">
             LOGIN <i class="fa-solid fa-arrow-right"></i>
         </button>
     </div>
@@ -699,123 +997,171 @@ footer {
 
 <!-- HOME PAGE -->
 <section class="page active" id="home">
-    <div class="container">
+<div class="container">
 
-        <div class="hero">
-            <div>
-                <div class="eyebrow">INDIA'S COMPETITIVE NETWORK</div>
-                <h1>DOMINATE<br>THE <span>ARENA.</span></h1>
-                <p class="hero-description">
-                    Welcome to PVP INDIA. Explore Minecraft PvP rankings,
-                    discover the best players, compete in events and climb
-                    the competitive leaderboard.
-                </p>
+    <div class="hero">
+        <div>
+            <div class="eyebrow">INDIA'S COMPETITIVE NETWORK</div>
 
-                <div class="hero-actions">
-                    <button class="primary-btn" onclick="showPage('tiers',document.querySelectorAll('.nav-links button')[1])">
-                        EXPLORE TIERS <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                    <button class="secondary-btn" onclick="showPage('events',document.querySelectorAll('.nav-links button')[2])">
-                        VIEW EVENTS
-                    </button>
-                </div>
-            </div>
+            <h1>DOMINATE<br>THE <span>ARENA.</span></h1>
 
-            <div class="earth-wrap">
-                <div class="earth-glow"></div>
-                <canvas id="earthCanvas"></canvas>
+            <p class="hero-description">
+                Welcome to PVP INDIA. Explore Minecraft PvP rankings,
+                discover the best players, compete in events and climb
+                the competitive leaderboard.
+            </p>
+
+            <div class="hero-actions">
+                <button class="primary-btn" onclick="showPage('tiers',document.querySelectorAll('.nav-links button')[1])">
+                    EXPLORE TIERS <i class="fa-solid fa-arrow-right"></i>
+                </button>
+
+                <button class="secondary-btn" onclick="showPage('events',document.querySelectorAll('.nav-links button')[2])">
+                    VIEW EVENTS
+                </button>
             </div>
         </div>
 
-        <div class="stats-grid">
-            <div class="stat-card">
-                <i class="fa-solid fa-users"></i>
-                <h3 id="totalPlayers">10</h3>
-                <p>RANKED PLAYERS</p>
-            </div>
-            <div class="stat-card">
-                <i class="fa-solid fa-trophy"></i>
-                <h3>8</h3>
-                <p>COMPETITIVE GAMEMODES</p>
-            </div>
-            <div class="stat-card">
-                <i class="fa-solid fa-earth-asia"></i>
-                <h3>INDIA</h3>
-                <p>COMPETITIVE REGION</p>
-            </div>
-        </div>
-
-        <div class="section-heading">
-            <div>
-                <h2>POPULAR <span>GAMEMODES</span></h2>
-                <p>Choose your competitive PvP category.</p>
-            </div>
-        </div>
-
-        <div class="modes" id="homeModes"></div>
-
-        <div class="section-heading">
-            <div>
-                <h2>TOP <span>PLAYERS</span></h2>
-                <p>Highest ranked players across the network.</p>
-            </div>
-            <button class="secondary-btn" onclick="showPage('tiers',document.querySelectorAll('.nav-links button')[1])">
-                FULL LEADERBOARD
-            </button>
-        </div>
-
-        <div class="leaderboard">
-            <div class="table-header">
-                <span>RANK</span>
-                <span>PLAYER</span>
-                <span>TIER</span>
-                <span>POINTS</span>
-                <span>REGION</span>
-            </div>
-            <div id="homeLeaderboard"></div>
+        <div class="earth-wrap">
+            <div class="earth-glow"></div>
+            <canvas id="earthCanvas"></canvas>
         </div>
     </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <i class="fa-solid fa-users"></i>
+            <h3 id="totalPlayers">10</h3>
+            <p>RANKED PLAYERS</p>
+        </div>
+
+        <div class="stat-card">
+            <i class="fa-solid fa-trophy"></i>
+            <h3>8</h3>
+            <p>COMPETITIVE GAMEMODES</p>
+        </div>
+
+        <div class="stat-card">
+            <i class="fa-solid fa-earth-asia"></i>
+            <h3>INDIA</h3>
+            <p>COMPETITIVE REGION</p>
+        </div>
+    </div>
+
+    <div class="section-heading">
+        <div>
+            <h2>POPULAR <span>GAMEMODES</span></h2>
+            <p>Choose your competitive PvP category.</p>
+        </div>
+    </div>
+
+    <div class="modes" id="homeModes"></div>
+
+    <div class="section-heading">
+        <div>
+            <h2>TOP <span>PLAYERS</span></h2>
+            <p>Highest ranked players across the network.</p>
+        </div>
+
+        <button class="secondary-btn" onclick="showPage('tiers',document.querySelectorAll('.nav-links button')[1])">
+            FULL LEADERBOARD
+        </button>
+    </div>
+
+    <div class="leaderboard">
+        <div class="table-header">
+            <span>RANK</span>
+            <span>PLAYER</span>
+            <span>TIER</span>
+            <span>POINTS</span>
+            <span>REGION</span>
+        </div>
+        <div id="homeLeaderboard"></div>
+    </div>
+
+    <!-- SERVER IP -->
+    <div class="server-panel">
+        <div>
+            <h3><i class="fa-solid fa-server" style="color:var(--red)"></i> JOIN THE NETWORK</h3>
+            <p>Connect to the PVP INDIA Minecraft server.</p>
+        </div>
+
+        <div class="server-copy">
+            <div class="server-address" id="serverAddress">play.pvpindia.in</div>
+            <button class="copy-btn" onclick="copyServerIP()">
+                <i class="fa-regular fa-copy"></i> <span id="copyText">COPY IP</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- DISCORD COMMUNITY -->
+    <div class="discord-section">
+        <i class="fa-brands fa-discord"></i>
+        <h2>JOIN OUR <span style="color:#8290ff">COMMUNITY</span></h2>
+        <p>
+            Meet competitive players, find opponents, participate in tournaments
+            and stay updated with everything happening in PVP INDIA.
+        </p>
+        <a class="discord-btn" href="https://discord.gg/" target="_blank" rel="noopener">
+            <i class="fa-brands fa-discord"></i> JOIN DISCORD
+        </a>
+    </div>
+
+</div>
 </section>
 
 <!-- TIER LIST PAGE -->
 <section class="page" id="tiers">
-    <div class="container">
-        <div class="section-heading" style="margin-top:55px">
-            <div>
-                <div class="eyebrow">COMPETITIVE RANKINGS</div>
-                <h2>PLAYER <span>LEADERBOARD</span></h2>
-                <p>Players are ordered by tier first, then points.</p>
-            </div>
-        </div>
+<div class="container">
 
-        <div class="modes" id="tierModes"></div>
-
-        <div class="leaderboard">
-            <div class="table-header">
-                <span>RANK</span>
-                <span>PLAYER</span>
-                <span>TIER</span>
-                <span>POINTS</span>
-                <span>REGION</span>
-            </div>
-            <div id="tierLeaderboard"></div>
+    <div class="section-heading" style="margin-top:55px">
+        <div>
+            <div class="eyebrow">COMPETITIVE RANKINGS</div>
+            <h2>PLAYER <span>LEADERBOARD</span></h2>
+            <p>Players are ordered by tier first, then points.</p>
         </div>
     </div>
+
+    <div class="modes" id="tierModes"></div>
+
+    <div class="leaderboard">
+        <div class="table-header">
+            <span>RANK</span>
+            <span>PLAYER</span>
+            <span>TIER</span>
+            <span>POINTS</span>
+            <span>REGION</span>
+        </div>
+        <div id="tierLeaderboard"></div>
+    </div>
+
+</div>
 </section>
 
 <!-- EVENTS PAGE -->
 <section class="page" id="events">
-    <div class="container">
-        <div class="section-heading" style="margin-top:55px">
-            <div>
-                <div class="eyebrow">COMPETE AND WIN</div>
-                <h2>UPCOMING <span>EVENTS</span></h2>
-                <p>Meet the competitors and explore event teams.</p>
-            </div>
-        </div>
+<div class="container">
 
-        <div class="events-grid" id="eventsGrid"></div>
+    <div class="section-heading" style="margin-top:55px">
+        <div>
+            <div class="eyebrow">COMPETE AND WIN</div>
+            <h2>UPCOMING <span>EVENTS</span></h2>
+            <p>Meet the competitors and explore event teams.</p>
+        </div>
     </div>
+
+    <div class="events-grid" id="eventsGrid"></div>
+
+    <div class="discord-section">
+        <i class="fa-brands fa-discord"></i>
+        <h2>READY TO <span style="color:#8290ff">COMPETE?</span></h2>
+        <p>Join the community and get updates about upcoming tournaments.</p>
+        <a class="discord-btn" href="https://discord.gg/" target="_blank" rel="noopener">
+            JOIN THE COMMUNITY
+        </a>
+    </div>
+
+</div>
 </section>
 
 </main>
@@ -826,9 +1172,10 @@ footer {
     MINECRAFT IS A TRADEMARK OF MOJANG AB.
 </footer>
 
-<!-- PLAYER PROFILE -->
+<!-- PLAYER PROFILE MODAL -->
 <div class="profile-overlay" id="profileOverlay">
     <div class="profile-modal">
+
         <div class="skin-container">
             <canvas id="profileSkin"></canvas>
         </div>
@@ -836,6 +1183,7 @@ footer {
         <div class="profile-details">
             <div class="eyebrow">PLAYER PROFILE</div>
             <h2 id="profileName">PLAYER</h2>
+
             <div class="discord-name" id="profileDiscord">Discord: @username</div>
 
             <p id="profileRegion">🇮🇳 India</p>
@@ -845,24 +1193,35 @@ footer {
                     <small>PLAYER TIER</small>
                     <strong id="profileTier">HT1</strong>
                 </div>
+
                 <div class="profile-stat">
                     <small>POINTS</small>
                     <strong id="profilePoints">2450</strong>
                 </div>
+
                 <div class="profile-stat">
                     <small>WINS</small>
                     <strong id="profileWins">128</strong>
                 </div>
+
                 <div class="profile-stat">
                     <small>WIN RATE</small>
                     <strong id="profileWinrate">82%</strong>
                 </div>
             </div>
         </div>
+
     </div>
 </div>
 
 <script>
+// =====================================
+// CONFIGURATION
+// =====================================
+
+// Replace these example values with your actual server details.
+const SERVER_IP = "play.pvpindia.in";
+
 // =====================================
 // PLAYER DATABASE
 // =====================================
@@ -880,10 +1239,9 @@ const players = [
     {name:"AquaPvP",discord:"aquapvp",tier:"LT5",points:1110,wins:47,winrate:"55%",region:"🇮🇳"}
 ];
 
-// Highest tier comes first.
 const tierOrder = {
-    HT1: 1, HT2: 2, HT3: 3, HT4: 4, HT5: 5,
-    LT1: 6, LT2: 7, LT3: 8, LT4: 9, LT5: 10
+    HT1:1, HT2:2, HT3:3, HT4:4, HT5:5,
+    LT1:6, LT2:7, LT3:8, LT4:9, LT5:10
 };
 
 function sortedPlayers() {
@@ -894,7 +1252,7 @@ function sortedPlayers() {
 }
 
 // =====================================
-// MINECRAFT SKIN AND HEAD URLS
+// MINECRAFT PLAYER SKINS
 // =====================================
 
 function skinURL(username) {
@@ -905,7 +1263,7 @@ function headURL(username) {
     return `https://mc-heads.net/avatar/${encodeURIComponent(username)}/64`;
 }
 
-function playerHead(username, extraClass = "") {
+function playerHead(username,extraClass="") {
     return `
         <img
             class="head-img ${extraClass}"
@@ -918,7 +1276,7 @@ function playerHead(username, extraClass = "") {
 }
 
 // =====================================
-// GAME MODES
+// GAMEMODES
 // =====================================
 
 const modes = [
@@ -931,13 +1289,15 @@ const modes = [
     {name:"Mace",icon:"fa-hammer"},
     {name:"Crystal",icon:"fa-gem"}
 ];
-    
+
 let selectedMode = "Sword";
 
 function renderModes(elementId) {
     document.getElementById(elementId).innerHTML = modes.map(mode => `
-        <button class="mode ${selectedMode === mode.name ? "selected" : ""}"
-            onclick="selectMode('${mode.name}')">
+        <button
+            class="mode ${selectedMode === mode.name ? "selected" : ""}"
+            onclick="selectMode('${mode.name}')"
+        >
             <i class="fa-solid ${mode.icon}"></i>
             ${mode.name}
         </button>
@@ -946,23 +1306,26 @@ function renderModes(elementId) {
 
 function selectMode(mode) {
     selectedMode = mode;
+
     renderModes("homeModes");
     renderModes("tierModes");
-    renderLeaderboard("homeLeaderboard", 5);
-    renderLeaderboard("tierLeaderboard", 100);
+
+    renderLeaderboard("homeLeaderboard",5);
+    renderLeaderboard("tierLeaderboard",100);
 }
 
 // =====================================
 // LEADERBOARD
 // =====================================
 
-function renderLeaderboard(elementId, limit) {
+function renderLeaderboard(elementId,limit) {
     const target = document.getElementById(elementId);
 
     target.innerHTML = sortedPlayers().slice(0,limit).map((player,index) => `
         <div class="player-row" onclick="openProfile('${player.name}')">
+
             <div class="rank ${index < 3 ? ["first","second","third"][index] : ""}">
-                #${index + 1}
+                #${index+1}
             </div>
 
             <div class="player-cell">
@@ -974,14 +1337,17 @@ function renderLeaderboard(elementId, limit) {
             </div>
 
             <div><span class="tier">${player.tier}</span></div>
+
             <div class="points">${player.points.toLocaleString()}</div>
+
             <div class="flag">${player.region}</div>
+
         </div>
     `).join("");
 }
 
 // =====================================
-// EVENTS WITH GOLDEN PLAYER HEADS
+// EVENTS
 // =====================================
 
 const events = [
@@ -1014,6 +1380,7 @@ const events = [
 function renderEvents() {
     document.getElementById("eventsGrid").innerHTML = events.map(event => `
         <div class="event-card">
+
             <h3>${event.title}</h3>
             <p>${event.description}</p>
 
@@ -1029,6 +1396,7 @@ function renderEvents() {
             </div>
 
             <span class="event-status">${event.status}</span>
+
         </div>
     `).join("");
 }
@@ -1066,10 +1434,10 @@ function openProfile(username) {
     }
 
     skinViewer = new skinview3d.SkinViewer({
-        canvas: canvas,
-        width: canvas.clientWidth || 400,
-        height: canvas.clientHeight || 470,
-        skin: skinURL(player.name)
+        canvas:canvas,
+        width:canvas.clientWidth || 400,
+        height:canvas.clientHeight || 470,
+        skin:skinURL(player.name)
     });
 
     skinViewer.fov = 45;
@@ -1077,7 +1445,6 @@ function openProfile(username) {
     skinViewer.controls.enableRotate = true;
     skinViewer.controls.enableZoom = true;
     skinViewer.controls.enablePan = false;
-
     skinViewer.animation = new skinview3d.IdleAnimation();
 }
 
@@ -1090,11 +1457,11 @@ function closeProfile() {
     }
 }
 
-document.getElementById("profileOverlay").addEventListener("click", function(e) {
+document.getElementById("profileOverlay").addEventListener("click",function(e) {
     if (e.target === this) closeProfile();
 });
 
-document.addEventListener("keydown", function(e) {
+document.addEventListener("keydown",function(e) {
     if (e.key === "Escape") closeProfile();
 });
 
@@ -1102,7 +1469,7 @@ document.addEventListener("keydown", function(e) {
 // NAVIGATION
 // =====================================
 
-function showPage(pageId, button) {
+function showPage(pageId,button) {
     document.querySelectorAll(".page").forEach(page => {
         page.classList.remove("active");
     });
@@ -1119,11 +1486,39 @@ function showPage(pageId, button) {
 }
 
 // =====================================
-// 3D ROTATING EARTH
+// COPY SERVER IP
+// =====================================
+
+document.getElementById("serverAddress").textContent = SERVER_IP;
+
+async function copyServerIP() {
+    const copyText = document.getElementById("copyText");
+
+    try {
+        await navigator.clipboard.writeText(SERVER_IP);
+        copyText.textContent = "COPIED!";
+    } catch(error) {
+        const input = document.createElement("textarea");
+        input.value = SERVER_IP;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand("copy");
+        input.remove();
+        copyText.textContent = "COPIED!";
+    }
+
+    setTimeout(() => {
+        copyText.textContent = "COPY IP";
+    },2000);
+}
+
+// =====================================
+// BLUE 3D EARTH + ORBITING MOON
 // =====================================
 
 function createEarth() {
     const canvas = document.getElementById("earthCanvas");
+
     if (!canvas || !window.THREE) return;
 
     const scene = new THREE.Scene();
@@ -1135,15 +1530,15 @@ function createEarth() {
         100
     );
 
-    camera.position.z = 3.2;
+    camera.position.z = 3.5;
 
     const renderer = new THREE.WebGLRenderer({
-        canvas: canvas,
-        alpha: true,
-        antialias: true
+        canvas:canvas,
+        alpha:true,
+        antialias:true
     });
 
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
 
     function resize() {
         const width = canvas.clientWidth;
@@ -1151,120 +1546,192 @@ function createEarth() {
 
         if (!width || !height) return;
 
-        renderer.setSize(width, height, false);
-        camera.aspect = width / height;
+        renderer.setSize(width,height,false);
+        camera.aspect = width/height;
         camera.updateProjectionMatrix();
     }
 
     resize();
-    window.addEventListener("resize", resize);
+    window.addEventListener("resize",resize);
 
-    const geometry = new THREE.SphereGeometry(1, 64, 64);
+    // Earth group
+    const earthGroup = new THREE.Group();
+    scene.add(earthGroup);
 
-    const material = new THREE.MeshPhongMaterial({
-        color: 0xc49a43,
-        shininess: 20,
-        specular: new THREE.Color(0x554422)
+    const earthGeometry = new THREE.SphereGeometry(1,96,96);
+
+    const earthMaterial = new THREE.MeshPhongMaterial({
+        color:0x79bfff,
+        shininess:35,
+        specular:new THREE.Color(0x4d9bff)
     });
 
-    const earth = new THREE.Mesh(geometry, material);
-    scene.add(earth);
+    const earth = new THREE.Mesh(earthGeometry,earthMaterial);
+    earthGroup.add(earth);
 
+    // Earth texture
     const textureLoader = new THREE.TextureLoader();
+    textureLoader.setCrossOrigin("anonymous");
 
     textureLoader.load(
         "https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg",
         texture => {
-            material.map = texture;
-            material.color.set(0xffffff);
-            material.needsUpdate = true;
+            earthMaterial.map = texture;
+            earthMaterial.color.set(0x91caff);
+            earthMaterial.needsUpdate = true;
         },
         undefined,
-        () => console.warn("Earth texture unavailable; using gold globe.")
+        () => console.warn("Earth texture unavailable.")
     );
 
-    const ambient = new THREE.AmbientLight(0xffffff, 1.1);
-    scene.add(ambient);
-
-    const light = new THREE.PointLight(0xffd27a, 2.2);
-    light.position.set(4, 3, 4);
-    scene.add(light);
-
+    // Blue atmosphere
     const atmosphere = new THREE.Mesh(
-        new THREE.SphereGeometry(1.04, 64, 64),
+        new THREE.SphereGeometry(1.07,64,64),
         new THREE.MeshBasicMaterial({
-            color: 0xe9b84c,
-            transparent: true,
-            opacity: .09,
-            side: THREE.BackSide
+            color:0x168dff,
+            transparent:true,
+            opacity:.15,
+            side:THREE.BackSide
         })
     );
 
-    scene.add(atmosphere);
+    earthGroup.add(atmosphere);
 
+    // Outer atmosphere ring
+    const outerGlow = new THREE.Mesh(
+        new THREE.SphereGeometry(1.13,64,64),
+        new THREE.MeshBasicMaterial({
+            color:0x208dff,
+            transparent:true,
+            opacity:.055,
+            side:THREE.BackSide
+        })
+    );
+
+    earthGroup.add(outerGlow);
+
+    // Blue orbital line
+    const orbitGeometry = new THREE.TorusGeometry(1.43,.006,8,180);
+
+    const orbitMaterial = new THREE.MeshBasicMaterial({
+        color:0x48aaff,
+        transparent:true,
+        opacity:.85
+    });
+
+    const orbitLine = new THREE.Mesh(orbitGeometry,orbitMaterial);
+    orbitLine.rotation.x = Math.PI/2.5;
+    earthGroup.add(orbitLine);
+
+    // Moon orbit group
+    const moonOrbit = new THREE.Group();
+    earthGroup.add(moonOrbit);
+
+    const moonGeometry = new THREE.SphereGeometry(.13,40,40);
+
+    const moonMaterial = new THREE.MeshPhongMaterial({
+        color:0xd8e5f5,
+        shininess:15
+    });
+
+    const moon = new THREE.Mesh(moonGeometry,moonMaterial);
+    moon.position.set(1.43,0,0);
+    moonOrbit.add(moon);
+
+    // Moon light
+    const moonLight = new THREE.PointLight(0x73baff,.35,2);
+    moonLight.position.set(1.4,.3,.4);
+    moonOrbit.add(moonLight);
+
+    // Stars
     const starsGeometry = new THREE.BufferGeometry();
-    const positions = [];
+    const starPositions = [];
 
-    for (let i = 0; i < 450; i++) {
-        positions.push(
-            (Math.random() - .5) * 12,
-            (Math.random() - .5) * 12,
-            (Math.random() - .5) * 12
+    for (let i=0;i<700;i++) {
+        starPositions.push(
+            (Math.random()-.5)*12,
+            (Math.random()-.5)*12,
+            (Math.random()-.5)*12
         );
     }
 
     starsGeometry.setAttribute(
         "position",
-        new THREE.Float32BufferAttribute(positions, 3)
+        new THREE.Float32BufferAttribute(starPositions,3)
     );
 
     const stars = new THREE.Points(
         starsGeometry,
         new THREE.PointsMaterial({
-            color: 0xe9b84c,
-            size: .012,
-            transparent: true,
-            opacity: .7
+            color:0x9acfff,
+            size:.012,
+            transparent:true,
+            opacity:.8
         })
     );
 
     scene.add(stars);
 
+    // Lighting
+    scene.add(new THREE.AmbientLight(0xffffff,.9));
+
+    const mainLight = new THREE.PointLight(0x70baff,2.5);
+    mainLight.position.set(4,3,4);
+    scene.add(mainLight);
+
+    const blueFill = new THREE.PointLight(0x126aff,1.1);
+    blueFill.position.set(-4,-2,-3);
+    scene.add(blueFill);
+
+    // Animation
     function animate() {
         requestAnimationFrame(animate);
 
-        earth.rotation.y += .0025;
+        earth.rotation.y += .002;
         earth.rotation.x = .08;
-        atmosphere.rotation.y -= .0005;
-        stars.rotation.y += .00015;
 
-        renderer.render(scene, camera);
+        atmosphere.rotation.y -= .0004;
+        orbitLine.rotation.z += .0006;
+
+        // Moon continuously travels around Earth.
+        moonOrbit.rotation.y += .009;
+        moonOrbit.rotation.x = .38;
+
+        moon.rotation.y += .003;
+        stars.rotation.y += .00012;
+
+        renderer.render(scene,camera);
     }
 
     animate();
 }
 
 // =====================================
-// INITIALIZE WEBSITE
+// INITIALIZE
 // =====================================
 
 document.getElementById("totalPlayers").textContent = players.length;
 
 renderModes("homeModes");
 renderModes("tierModes");
-renderLeaderboard("homeLeaderboard", 5);
-renderLeaderboard("tierLeaderboard", 100);
+
+renderLeaderboard("homeLeaderboard",5);
+renderLeaderboard("tierLeaderboard",100);
+
 renderEvents();
 createEarth();
 
-// Demo online counter
+// Demo counter only.
+// Connect a real Minecraft server API for actual online player data.
 let online = 128;
 
 setInterval(() => {
-    online += Math.floor(Math.random() * 5) - 2;
-    online = Math.max(1, online);
+    online += Math.floor(Math.random()*5)-2;
+    online = Math.max(1,online);
+
     document.getElementById("onlineCount").textContent = online;
-}, 60000);
+},60000);
+
 </script>
 
 </body>
