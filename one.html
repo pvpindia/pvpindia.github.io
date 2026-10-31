@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PVP INDIA | Minecraft PvP Rankings</title>
+<meta name="description" content="PVP INDIA - Minecraft PvP rankings, player tiers, events and leaderboards.">
+<link rel="icon" href="tier.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://unpkg.com/skinview3d@3.2.0/bundles/skinview3d.bundle.js"></script>
+
+<style>
+:root {
+    --bg: #050505;
+    --panel: #101010;
+    --panel2: #151515;
+    --gold: #e9b84c;
+    --gold2: #fff0a8;
+    --muted: #929292;
+    --border: rgba(233,184,76,.19);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--bg);
+    color: #fff;
+    font-family: Inter, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(0,123,255,.05), transparent 48%),
+        radial-gradient(ellipse at 90% 90%, rgba(0,123,255,.05), transparent 40%);
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.navbar {
+    height: 76px;
+    padding: 0 7%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    background: rgba(5,5,5,.88);
+    backdrop-filter: blur(18px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-family: Orbitron, sans-serif;
+    font-size: 21px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-shadow: 0 0 20px rgba(233,184,76,.3);
+}
+
+.logo span {
+    color: white;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+}
+
+.nav-links button {
+    border: 0;
+    background: none;
+    color: #aaa;
+    font-weight: 700;
+    font-size: 13px;
+    transition: .25s;
+    position: relative;
+}
+
+.nav-links button:hover,
+.nav-links button.active {
+    color: var(--gold);
+}
+
+.nav-links button.active::after {
+    content: "";
+    height: 2px;
+    position: absolute;
+    bottom: -12px;
+    left: 0;
+    right: 0;
+    background: var(--gold);
+    box-shadow: 0 0 12px var(--gold);
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.online {
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    padding: 9px 14px;
+    color: #ccc;
+    font-size: 11px;
+}
+
+.online-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    background: #42e58c;
+    border-radius: 50%;
+    margin-right: 7px;
+    box-shadow: 0 0 10px #42e58c;
+}
+
+.login-btn {
+    padding: 10px 17px;
+    background: var(--gold);
+    color: #080808;
+    border: 0;
+    border-radius: 5px;
+    font-weight: 900;
+    font-size: 11px;
+}
+
+.page {
+    display: none;
+    animation: pageIn .4s ease;
+}
+
+.page.active {
+    display: block;
+}
+
+@keyframes pageIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.container {
+    width: min(1160px, 90%);
+    margin: auto;
+}
+
+.hero {
+    min-height: 570px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 25px;
+    padding: 45px 0;
+}
+
+.eyebrow {
+    color: var(--gold);
+    font-family: Orbitron, sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    margin-bottom: 22px;
+}
+
+.hero h1 {
+    font-family: Orbitron, sans-serif;
+    font-size: clamp(38px, 6vw, 75px);
+    line-height: 1.08;
+    font-weight: 900;
+}
+
+.hero h1 span {
+    color: var(--gold);
+    text-shadow: 0 0 30px rgba(233,184,76,.25);
+}
+
+.hero-description {
+    color: #999;
+    line-height: 1.9;
+    max-width: 480px;
+    margin: 22px 0 30px;
+    font-size: 14px;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.primary-btn,
+.secondary-btn {
+    border-radius: 5px;
+    padding: 14px 22px;
+    font-weight: 800;
+    font-size: 12px;
+    transition: .25s;
+}
+
+.primary-btn {
+    background: var(--gold);
+    color: #080808;
+    border: 1px solid var(--gold);
+}
+
+.secondary-btn {
+    background: transparent;
+    color: white;
+    border: 1px solid var(--border);
+}
+
+.primary-btn:hover {
+    box-shadow: 0 0 25px rgba(233,184,76,.3);
+    transform: translateY(-3px);
+}
+
+.secondary-btn:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+}
+
+.earth-wrap {
+    position: relative;
+    height: 430px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#earthCanvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.earth-glow {
+    position: absolute;
+    width: 270px;
+    height: 270px;
+    border-radius: 50%;
+    background: rgba(233,184,76,.12);
+    filter: blur(75px);
+    z-index: -1;
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin: 35px 0 22px;
+}
+
+.section-heading h2 {
+    font-family: Orbitron, sans-serif;
+    font-size: 20px;
+}
+
+.section-heading h2 span {
+    color: var(--gold);
+}
+
+.section-heading p {
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 7px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 20px 0 50px;
+}
+
+.stat-card {
+    padding: 23px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: linear-gradient(145deg,#171717,#0b0b0b);
+}
+
+.stat-card i {
+    color: var(--gold);
+    font-size: 19px;
+}
+
+.stat-card h3 {
+    font-family: Orbitron, sans-serif;
+    font-size: 27px;
+    margin: 14px 0 6px;
+}
+
+.stat-card p {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.modes {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 13px;
+    margin: 22px 0 35px;
+}
+
+.mode {
+    border: 1px solid var(--border);
+    background: #111;
+    border-radius: 8px;
+    padding: 18px 10px;
+    color: #ccc;
+    font-weight: 800;
+    transition: .25s;
+}
+
+.mode i {
+    display: block;
+    font-size: 22px;
+    color: var(--gold);
+    margin-bottom: 11px;
+}
+
+.mode:hover,
+.mode.selected {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: #1c180f;
+    box-shadow: 0 0 20px rgba(233,184,76,.08);
+    transform: translateY(-3px);
+}
+
+.leaderboard {
+    border: 1px solid var(--border);
+    background: rgba(15,15,15,.85);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 60px;
+}
+
+.table-header,
+.player-row {
+    display: grid;
+    grid-template-columns: 65px 1.8fr 1fr 1fr 1fr;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 22px;
+}
+
+.table-header {
+    color: var(--gold);
+    font-size: 10px;
+    letter-spacing: 1px;
+    background: #17140e;
+    font-weight: 900;
+}
+
+.player-row {
+    border-top: 1px solid rgba(255,255,255,.05);
+    cursor: pointer;
+    transition: .2s;
+}
+
+.player-row:hover {
+    background: rgba(233,184,76,.055);
+}
+
+.player-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.player-cell strong {
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+
+.player-cell small {
+    display: block;
+    color: #777;
+    font-size: 10px;
+    margin-top: 4px;
+}
+
+.rank {
+    color: #888;
+    font-family: Orbitron, sans-serif;
+    font-weight: 800;
+}
+
+.rank.first { color: #ffd45e; }
+.rank.second { color: #c4d3df; }
+.rank.third { color: #c68b59; }
+
+.tier {
+    display: inline-block;
+    padding: 7px 10px;
+    border-radius: 4px;
+    background: rgba(233,184,76,.12);
+    color: var(--gold);
+    border: 1px solid rgba(233,184,76,.25);
+    font-size: 11px;
+    font-weight: 900;
+}
+
+.points {
+    font-family: Orbitron, sans-serif;
+    font-size: 12px;
+}
+
+.flag {
+    font-size: 17px;
+}
+
+.head-img {
+    width: 39px;
+    height: 39px;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    object-fit: cover;
+    image-rendering: pixelated;
+    box-shadow: 0 0 12px rgba(233,184,76,.2);
+    background: #222;
+}
+
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    margin: 25px 0 60px;
+}
+
+.event-card {
+    padding: 23px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: linear-gradient(140deg,#17140e,#0d0d0d);
+}
+
+.event-card h3 {
+    font-family: Orbitron, sans-serif;
+    font-size: 15px;
+}
+
+.event-card p {
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 8px;
+}
+
+.event-members {
+    display: flex;
+    gap: 13px;
+    margin-top: 22px;
+}
+
+.event-member {
+    text-align: center;
+    font-size: 10px;
+    color: #aaa;
+}
+
+.event-member .head-img {
+    width: 53px;
+    height: 53px;
+    display: block;
+    margin: 0 auto 8px;
+    border-width: 3px;
+}
+
+.event-status {
+    display: inline-block;
+    margin-top: 15px;
+    font-size: 10px;
+    color: #5ce69a;
+    background: rgba(92,230,154,.08);
+    border: 1px solid rgba(92,230,154,.2);
+    padding: 6px 10px;
+    border-radius: 20px;
+}
+
+.profile-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    background: rgba(0,0,0,.84);
+    backdrop-filter: blur(12px);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.profile-overlay.open {
+    display: flex;
+}
+
+.profile-modal {
+    width: min(850px, 100%);
+    min-height: 470px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: 1px solid rgba(233,184,76,.35);
+    border-radius: 14px;
+    background: linear-gradient(145deg,#171717,#080808);
+    overflow: hidden;
+    box-shadow: 0 0 60px rgba(233,184,76,.12);
+    animation: modalIn .3s ease;
+}
+
+@keyframes modalIn {
+    from { opacity: 0; transform: scale(.95) translateY(15px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.skin-container {
+    background: radial-gradient(circle,rgba(233,184,76,.12),transparent 65%);
+    min-height: 470px;
+}
+
+#profileSkin {
+    width: 100%;
+    height: 470px;
+    display: block;
+}
+
+.profile-details {
+    padding: 55px 30px;
+    align-self: center;
+}
+
+.profile-details .eyebrow {
+    margin-bottom: 12px;
+}
+
+.profile-details h2 {
+    font-family: Orbitron, sans-serif;
+    font-size: clamp(22px,3vw,30px);
+    overflow-wrap: anywhere;
+}
+
+.discord-name {
+    color: var(--gold);
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+.profile-details p {
+    color: #999;
+    font-size: 13px;
+    margin-top: 20px;
+}
+
+.profile-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.profile-stat {
+    padding: 14px;
+    background: #171717;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+}
+
+.profile-stat small {
+    color: #888;
+    display: block;
+    font-size: 10px;
+    margin-bottom: 8px;
+}
+
+.profile-stat strong {
+    font-family: Orbitron, sans-serif;
+    color: var(--gold);
+}
+
+footer {
+    border-top: 1px solid var(--border);
+    padding: 30px 5%;
+    text-align: center;
+    color: #666;
+    font-size: 11px;
+}
+
+@media(max-width:750px) {
+    .navbar {
+        padding: 0 5%;
+        height: auto;
+        min-height: 70px;
+        flex-wrap: wrap;
+        gap: 12px;
+        padding-top: 13px;
+        padding-bottom: 13px;
+    }
+
+    .nav-links {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        gap: 25px;
+        padding: 10px 0 4px;
+    }
+
+    .header-right { margin-left: auto; }
+    .online { display: none; }
+
+    .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding-top: 60px;
+    }
+
+    .hero-description { margin-left: auto; margin-right: auto; }
+    .hero-actions { justify-content: center; }
+    .earth-wrap { height: 320px; }
+
+    .stats-grid { grid-template-columns: 1fr; }
+    .events-grid { grid-template-columns: 1fr; }
+    .modes { grid-template-columns: repeat(2,1fr); }
+
+    .table-header,
+    .player-row {
+        grid-template-columns: 35px 1.5fr .8fr .8fr;
+        padding: 13px 10px;
+        gap: 7px;
+    }
+
+    .table-header span:last-child,
+    .player-row > div:last-child {
+        display: none;
+    }
+
+    .player-cell { gap: 7px; }
+    .player-cell strong { font-size: 11px; }
+    .head-img { width: 32px; height: 32px; }
+
+    .profile-modal {
+        grid-template-columns: 1fr;
+        max-width: 440px;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .skin-container { min-height: 300px; }
+    #profileSkin { height: 300px; }
+    .profile-details { padding: 25px; }
+}
+</style>
+</head>
+
+<body>
+
+<header class="navbar">
+    <div class="logo">PVP <span>INDIA</span></div>
+
+    <nav class="nav-links">
+        <button class="active" onclick="showPage('home',this)">HOME</button>
+        <button onclick="showPage('tiers',this)">TIER LIST</button>
+        <button onclick="showPage('events',this)">EVENTS</button>
+    </nav>
+
+    <div class="header-right">
+        <div class="online">
+            <span class="online-dot"></span>
+            <span id="onlineCount">128</span> ONLINE
+        </div>
+        <button class="login-btn" onclick="alert('Login integration can be connected here.')">
+            LOGIN <i class="fa-solid fa-arrow-right"></i>
+        </button>
+    </div>
+</header>
+
+<main>
+
+<!-- HOME PAGE -->
+<section class="page active" id="home">
+    <div class="container">
+
+        <div class="hero">
+            <div>
+                <div class="eyebrow">INDIA'S COMPETITIVE NETWORK</div>
+                <h1>DOMINATE<br>THE <span>ARENA.</span></h1>
+                <p class="hero-description">
+                    Welcome to PVP INDIA. Explore Minecraft PvP rankings,
+                    discover the best players, compete in events and climb
+                    the competitive leaderboard.
+                </p>
+
+                <div class="hero-actions">
+                    <button class="primary-btn" onclick="showPage('tiers',document.querySelectorAll('.nav-links button')[1])">
+                        EXPLORE TIERS <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                    <button class="secondary-btn" onclick="showPage('events',document.querySelectorAll('.nav-links button')[2])">
+                        VIEW EVENTS
+                    </button>
+                </div>
+            </div>
+
+            <div class="earth-wrap">
+                <div class="earth-glow"></div>
+                <canvas id="earthCanvas"></canvas>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <i class="fa-solid fa-users"></i>
+                <h3 id="totalPlayers">10</h3>
+                <p>RANKED PLAYERS</p>
+            </div>
+            <div class="stat-card">
+                <i class="fa-solid fa-trophy"></i>
+                <h3>8</h3>
+                <p>COMPETITIVE GAMEMODES</p>
+            </div>
+            <div class="stat-card">
+                <i class="fa-solid fa-earth-asia"></i>
+                <h3>INDIA</h3>
+                <p>COMPETITIVE REGION</p>
+            </div>
+        </div>
+
+        <div class="section-heading">
+            <div>
+                <h2>POPULAR <span>GAMEMODES</span></h2>
+                <p>Choose your competitive PvP category.</p>
+            </div>
+        </div>
+
+        <div class="modes" id="homeModes"></div>
+
+        <div class="section-heading">
+            <div>
+                <h2>TOP <span>PLAYERS</span></h2>
+                <p>Highest ranked players across the network.</p>
+            </div>
+            <button class="secondary-btn" onclick="showPage('tiers',document.querySelectorAll('.nav-links button')[1])">
+                FULL LEADERBOARD
+            </button>
+        </div>
+
+        <div class="leaderboard">
+            <div class="table-header">
+                <span>RANK</span>
+                <span>PLAYER</span>
+                <span>TIER</span>
+                <span>POINTS</span>
+                <span>REGION</span>
+            </div>
+            <div id="homeLeaderboard"></div>
+        </div>
+    </div>
+</section>
+
+<!-- TIER LIST PAGE -->
+<section class="page" id="tiers">
+    <div class="container">
+        <div class="section-heading" style="margin-top:55px">
+            <div>
+                <div class="eyebrow">COMPETITIVE RANKINGS</div>
+                <h2>PLAYER <span>LEADERBOARD</span></h2>
+                <p>Players are ordered by tier first, then points.</p>
+            </div>
+        </div>
+
+        <div class="modes" id="tierModes"></div>
+
+        <div class="leaderboard">
+            <div class="table-header">
+                <span>RANK</span>
+                <span>PLAYER</span>
+                <span>TIER</span>
+                <span>POINTS</span>
+                <span>REGION</span>
+            </div>
+            <div id="tierLeaderboard"></div>
+        </div>
+    </div>
+</section>
+
+<!-- EVENTS PAGE -->
+<section class="page" id="events">
+    <div class="container">
+        <div class="section-heading" style="margin-top:55px">
+            <div>
+                <div class="eyebrow">COMPETE AND WIN</div>
+                <h2>UPCOMING <span>EVENTS</span></h2>
+                <p>Meet the competitors and explore event teams.</p>
+            </div>
+        </div>
+
+        <div class="events-grid" id="eventsGrid"></div>
+    </div>
+</section>
+
+</main>
+
+<footer>
+    © 2026 PVP INDIA. ALL RIGHTS RESERVED.
+    <br><br>
+    MINECRAFT IS A TRADEMARK OF MOJANG AB.
+</footer>
+
+<!-- PLAYER PROFILE -->
+<div class="profile-overlay" id="profileOverlay">
+    <div class="profile-modal">
+        <div class="skin-container">
+            <canvas id="profileSkin"></canvas>
+        </div>
+
+        <div class="profile-details">
+            <div class="eyebrow">PLAYER PROFILE</div>
+            <h2 id="profileName">PLAYER</h2>
+            <div class="discord-name" id="profileDiscord">Discord: @username</div>
+
+            <p id="profileRegion">🇮🇳 India</p>
+
+            <div class="profile-stats">
+                <div class="profile-stat">
+                    <small>PLAYER TIER</small>
+                    <strong id="profileTier">HT1</strong>
+                </div>
+                <div class="profile-stat">
+                    <small>POINTS</small>
+                    <strong id="profilePoints">2450</strong>
+                </div>
+                <div class="profile-stat">
+                    <small>WINS</small>
+                    <strong id="profileWins">128</strong>
+                </div>
+                <div class="profile-stat">
+                    <small>WIN RATE</small>
+                    <strong id="profileWinrate">82%</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// =====================================
+// PLAYER DATABASE
+// =====================================
+
+const players = [
+    {name:"DarkWarriorXO",discord:"darkwarriorxo",tier:"HT1",points:2450,wins:128,winrate:"82%",region:"🇮🇳"},
+    {name:"xShadow",discord:"xshadow_",tier:"HT2",points:2310,wins:116,winrate:"79%",region:"🇮🇳"},
+    {name:"NotRusher",discord:"notrusher",tier:"LT1",points:2190,wins:104,winrate:"76%",region:"🇮🇳"},
+    {name:"KillerOP",discord:"killerop",tier:"LT2",points:1980,wins:96,winrate:"73%",region:"🇮🇳"},
+    {name:"ItsAarav",discord:"itsaarav",tier:"HT3",points:1850,wins:88,winrate:"71%",region:"🇮🇳"},
+    {name:"VoidSlayer",discord:"voidslayer",tier:"LT3",points:1710,wins:81,winrate:"68%",region:"🇮🇳"},
+    {name:"BlazeYT",discord:"blazeyt",tier:"HT4",points:1580,wins:74,winrate:"65%",region:"🇮🇳"},
+    {name:"FrostByte",discord:"frostbyte",tier:"LT4",points:1420,wins:69,winrate:"62%",region:"🇮🇳"},
+    {name:"PixelNinja",discord:"pixelninja",tier:"HT5",points:1290,wins:58,winrate:"59%",region:"🇮🇳"},
+    {name:"AquaPvP",discord:"aquapvp",tier:"LT5",points:1110,wins:47,winrate:"55%",region:"🇮🇳"}
+];
+
+// Highest tier comes first.
+const tierOrder = {
+    HT1: 1, HT2: 2, HT3: 3, HT4: 4, HT5: 5,
+    LT1: 6, LT2: 7, LT3: 8, LT4: 9, LT5: 10
+};
+
+function sortedPlayers() {
+    return [...players].sort((a,b) =>
+        tierOrder[a.tier] - tierOrder[b.tier] ||
+        b.points - a.points
+    );
+}
+
+// =====================================
+// MINECRAFT SKIN AND HEAD URLS
+// =====================================
+
+function skinURL(username) {
+    return `https://mc-heads.net/skin/${encodeURIComponent(username)}`;
+}
+
+function headURL(username) {
+    return `https://mc-heads.net/avatar/${encodeURIComponent(username)}/64`;
+}
+
+function playerHead(username, extraClass = "") {
+    return `
+        <img
+            class="head-img ${extraClass}"
+            src="${headURL(username)}"
+            alt="${username}"
+            loading="lazy"
+            onerror="this.onerror=null;this.src='https://minotar.net/helm/${encodeURIComponent(username)}/64.png'"
+        >
+    `;
+}
+
+// =====================================
+// GAME MODES
+// =====================================
+
+const modes = [
+    {name:"Sword",icon:"fa-khanda"},
+    {name:"Axe",icon:"fa-gavel"},
+    {name:"Pot",icon:"fa-flask"},
+    {name:"NethPot",icon:"fa-fire"},
+    {name:"SMP",icon:"fa-cube"},
+    {name:"UHC",icon:"fa-heart"},
+    {name:"Mace",icon:"fa-hammer"},
+    {name:"Crystal",icon:"fa-gem"}
+];
+    
+let selectedMode = "Sword";
+
+function renderModes(elementId) {
+    document.getElementById(elementId).innerHTML = modes.map(mode => `
+        <button class="mode ${selectedMode === mode.name ? "selected" : ""}"
+            onclick="selectMode('${mode.name}')">
+            <i class="fa-solid ${mode.icon}"></i>
+            ${mode.name}
+        </button>
+    `).join("");
+}
+
+function selectMode(mode) {
+    selectedMode = mode;
+    renderModes("homeModes");
+    renderModes("tierModes");
+    renderLeaderboard("homeLeaderboard", 5);
+    renderLeaderboard("tierLeaderboard", 100);
+}
+
+// =====================================
+// LEADERBOARD
+// =====================================
+
+function renderLeaderboard(elementId, limit) {
+    const target = document.getElementById(elementId);
+
+    target.innerHTML = sortedPlayers().slice(0,limit).map((player,index) => `
+        <div class="player-row" onclick="openProfile('${player.name}')">
+            <div class="rank ${index < 3 ? ["first","second","third"][index] : ""}">
+                #${index + 1}
+            </div>
+
+            <div class="player-cell">
+                ${playerHead(player.name)}
+                <div>
+                    <strong>${player.name}</strong>
+                    <small>@${player.discord}</small>
+                </div>
+            </div>
+
+            <div><span class="tier">${player.tier}</span></div>
+            <div class="points">${player.points.toLocaleString()}</div>
+            <div class="flag">${player.region}</div>
+        </div>
+    `).join("");
+}
+
+// =====================================
+// EVENTS WITH GOLDEN PLAYER HEADS
+// =====================================
+
+const events = [
+    {
+        title:"INDIA PVP CHAMPIONSHIP",
+        description:"Competitive PvP tournament featuring top Indian players.",
+        status:"REGISTRATION OPEN",
+        members:["DarkWarriorXO","xShadow","NotRusher"]
+    },
+    {
+        title:"WEEKLY TIER BATTLE",
+        description:"Challenge ranked competitors and prove your skills.",
+        status:"UPCOMING",
+        members:["KillerOP","ItsAarav","VoidSlayer"]
+    },
+    {
+        title:"SWORD DUEL CUP",
+        description:"A competitive sword-only tournament.",
+        status:"REGISTRATION OPEN",
+        members:["BlazeYT","FrostByte","PixelNinja"]
+    },
+    {
+        title:"CRYSTAL SHOWDOWN",
+        description:"Test your crystal PvP skills against the best.",
+        status:"UPCOMING",
+        members:["AquaPvP","DarkWarriorXO","xShadow"]
+    }
+];
+
+function renderEvents() {
+    document.getElementById("eventsGrid").innerHTML = events.map(event => `
+        <div class="event-card">
+            <h3>${event.title}</h3>
+            <p>${event.description}</p>
+
+            <div class="event-members">
+                ${event.members.map(name => `
+                    <div class="event-member">
+                        <div onclick="openProfile('${name}')" style="cursor:pointer">
+                            ${playerHead(name)}
+                        </div>
+                        ${name}
+                    </div>
+                `).join("")}
+            </div>
+
+            <span class="event-status">${event.status}</span>
+        </div>
+    `).join("");
+}
+
+// =====================================
+// 3D PLAYER PROFILE
+// =====================================
+
+let skinViewer = null;
+
+function openProfile(username) {
+    const player = players.find(p => p.name === username);
+    if (!player) return;
+
+    document.getElementById("profileName").textContent = player.name;
+    document.getElementById("profileDiscord").textContent = "Discord: @" + player.discord;
+    document.getElementById("profileTier").textContent = player.tier;
+    document.getElementById("profilePoints").textContent = player.points.toLocaleString();
+    document.getElementById("profileWins").textContent = player.wins;
+    document.getElementById("profileWinrate").textContent = player.winrate;
+    document.getElementById("profileRegion").textContent = player.region + " India";
+
+    document.getElementById("profileOverlay").classList.add("open");
+
+    const canvas = document.getElementById("profileSkin");
+
+    if (skinViewer) {
+        skinViewer.dispose();
+        skinViewer = null;
+    }
+
+    if (typeof skinview3d === "undefined") {
+        console.error("skinview3d library could not load.");
+        return;
+    }
+
+    skinViewer = new skinview3d.SkinViewer({
+        canvas: canvas,
+        width: canvas.clientWidth || 400,
+        height: canvas.clientHeight || 470,
+        skin: skinURL(player.name)
+    });
+
+    skinViewer.fov = 45;
+    skinViewer.zoom = 0.75;
+    skinViewer.controls.enableRotate = true;
+    skinViewer.controls.enableZoom = true;
+    skinViewer.controls.enablePan = false;
+
+    skinViewer.animation = new skinview3d.IdleAnimation();
+}
+
+function closeProfile() {
+    document.getElementById("profileOverlay").classList.remove("open");
+
+    if (skinViewer) {
+        skinViewer.dispose();
+        skinViewer = null;
+    }
+}
+
+document.getElementById("profileOverlay").addEventListener("click", function(e) {
+    if (e.target === this) closeProfile();
+});
+
+document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape") closeProfile();
+});
+
+// =====================================
+// NAVIGATION
+// =====================================
+
+function showPage(pageId, button) {
+    document.querySelectorAll(".page").forEach(page => {
+        page.classList.remove("active");
+    });
+
+    document.getElementById(pageId).classList.add("active");
+
+    document.querySelectorAll(".nav-links button").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    if (button) button.classList.add("active");
+
+    window.scrollTo({top:0,behavior:"smooth"});
+}
+
+// =====================================
+// 3D ROTATING EARTH
+// =====================================
+
+function createEarth() {
+    const canvas = document.getElementById("earthCanvas");
+    if (!canvas || !window.THREE) return;
+
+    const scene = new THREE.Scene();
+
+    const camera = new THREE.PerspectiveCamera(
+        45,
+        canvas.clientWidth / canvas.clientHeight,
+        0.1,
+        100
+    );
+
+    camera.position.z = 3.2;
+
+    const renderer = new THREE.WebGLRenderer({
+        canvas: canvas,
+        alpha: true,
+        antialias: true
+    });
+
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    function resize() {
+        const width = canvas.clientWidth;
+        const height = canvas.clientHeight;
+
+        if (!width || !height) return;
+
+        renderer.setSize(width, height, false);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+    }
+
+    resize();
+    window.addEventListener("resize", resize);
+
+    const geometry = new THREE.SphereGeometry(1, 64, 64);
+
+    const material = new THREE.MeshPhongMaterial({
+        color: 0xc49a43,
+        shininess: 20,
+        specular: new THREE.Color(0x554422)
+    });
+
+    const earth = new THREE.Mesh(geometry, material);
+    scene.add(earth);
+
+    const textureLoader = new THREE.TextureLoader();
+
+    textureLoader.load(
+        "https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg",
+        texture => {
+            material.map = texture;
+            material.color.set(0xffffff);
+            material.needsUpdate = true;
+        },
+        undefined,
+        () => console.warn("Earth texture unavailable; using gold globe.")
+    );
+
+    const ambient = new THREE.AmbientLight(0xffffff, 1.1);
+    scene.add(ambient);
+
+    const light = new THREE.PointLight(0xffd27a, 2.2);
+    light.position.set(4, 3, 4);
+    scene.add(light);
+
+    const atmosphere = new THREE.Mesh(
+        new THREE.SphereGeometry(1.04, 64, 64),
+        new THREE.MeshBasicMaterial({
+            color: 0xe9b84c,
+            transparent: true,
+            opacity: .09,
+            side: THREE.BackSide
+        })
+    );
+
+    scene.add(atmosphere);
+
+    const starsGeometry = new THREE.BufferGeometry();
+    const positions = [];
+
+    for (let i = 0; i < 450; i++) {
+        positions.push(
+            (Math.random() - .5) * 12,
+            (Math.random() - .5) * 12,
+            (Math.random() - .5) * 12
+        );
+    }
+
+    starsGeometry.setAttribute(
+        "position",
+        new THREE.Float32BufferAttribute(positions, 3)
+    );
+
+    const stars = new THREE.Points(
+        starsGeometry,
+        new THREE.PointsMaterial({
+            color: 0xe9b84c,
+            size: .012,
+            transparent: true,
+            opacity: .7
+        })
+    );
+
+    scene.add(stars);
+
+    function animate() {
+        requestAnimationFrame(animate);
+
+        earth.rotation.y += .0025;
+        earth.rotation.x = .08;
+        atmosphere.rotation.y -= .0005;
+        stars.rotation.y += .00015;
+
+        renderer.render(scene, camera);
+    }
+
+    animate();
+}
+
+// =====================================
+// INITIALIZE WEBSITE
+// =====================================
+
+document.getElementById("totalPlayers").textContent = players.length;
+
+renderModes("homeModes");
+renderModes("tierModes");
+renderLeaderboard("homeLeaderboard", 5);
+renderLeaderboard("tierLeaderboard", 100);
+renderEvents();
+createEarth();
+
+// Demo online counter
+let online = 128;
+
+setInterval(() => {
+    online += Math.floor(Math.random() * 5) - 2;
+    online = Math.max(1, online);
+    document.getElementById("onlineCount").textContent = online;
+}, 60000);
+</script>
+
+</body>
+</html>
