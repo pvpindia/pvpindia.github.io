@@ -1,0 +1,274 @@
+from pathlib import Path
+import re
+
+source_path = Path("/mnt/data/Pasted text(20261031-171156).txt")
+html = source_path.read_text(encoding="utf-8")
+
+premium_css = r"""
+/* ===== PVP INDIA PREMIUM RED / GRAPHITE REDESIGN ===== */
+:root{
+  --bg:#070809;--panel:#111316;--panel2:#181b20;
+  --gold:#f04452;--gold2:#ff8991;--muted:#9299a3;
+  --border:rgba(240,68,82,.22);
+  --red-glow:0 0 34px rgba(240,68,82,.18);
+}
+html{scroll-behavior:smooth}
+body{
+  background:
+    radial-gradient(ellipse at 50% 0%,rgba(18,87,166,.13),transparent 40%),
+    radial-gradient(ellipse at 90% 80%,rgba(240,68,82,.07),transparent 35%),
+    #070809;
+}
+body::before{
+  background:
+    linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px);
+  background-size:42px 42px;
+  opacity:.35;
+}
+.navbar{
+  background:rgba(7,8,9,.82);border-bottom:1px solid rgba(255,255,255,.08);
+  box-shadow:0 12px 40px rgba(0,0,0,.2)
+}
+.logo{color:#ff4c59;text-shadow:0 0 24px rgba(240,68,82,.35)}
+.nav-links button{letter-spacing:1.1px}
+.nav-links button:hover,.nav-links button.active{color:#ff5965}
+.nav-links button.active::after{background:#f04452;box-shadow:0 0 15px #f04452}
+.online{border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.035)}
+.login-btn,.primary-btn{
+  background:linear-gradient(135deg,#ff5965,#c91f35);color:#fff;border:1px solid #ff6570;
+  box-shadow:0 8px 24px rgba(210,35,57,.18)
+}
+.primary-btn:hover,.login-btn:hover{box-shadow:0 0 32px rgba(240,68,82,.4);transform:translateY(-3px)}
+.secondary-btn{border-color:rgba(255,255,255,.16);background:rgba(255,255,255,.025)}
+.secondary-btn:hover{border-color:#f04452;color:#ff6874;box-shadow:var(--red-glow)}
+.hero{min-height:610px}
+.eyebrow{color:#ff6874}
+.hero h1 span,.section-heading h2 span{color:#ff5965;text-shadow:0 0 30px rgba(240,68,82,.23)}
+.hero-description{color:#a4aab3}
+.earth-wrap{
+  border-radius:50%;isolation:isolate;
+  background:radial-gradient(circle,rgba(12,92,180,.2),rgba(5,17,34,.1) 48%,transparent 72%);
+}
+.earth-glow{
+  background:rgba(22,117,255,.34);filter:blur(85px);width:310px;height:310px
+}
+.stat-card,.leaderboard,.event-card,.profile-modal{
+  background:linear-gradient(145deg,rgba(24,27,32,.96),rgba(10,12,15,.96));
+  border:1px solid rgba(255,255,255,.09);box-shadow:0 18px 55px rgba(0,0,0,.22);
+}
+.stat-card{position:relative;overflow:hidden;transition:transform .35s,border-color .35s,box-shadow .35s}
+.stat-card::after,.event-card::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(115deg,transparent 20%,rgba(255,255,255,.045),transparent 70%);
+  transform:translateX(-120%);transition:transform .7s
+}
+.stat-card:hover,.event-card:hover{transform:translateY(-6px);border-color:rgba(240,68,82,.45);box-shadow:var(--red-glow)}
+.stat-card:hover::after,.event-card:hover::after{transform:translateX(120%)}
+.stat-card i,.mode i{color:#ff5965}
+.modes{gap:15px}
+.mode{
+  position:relative;overflow:hidden;min-height:108px;
+  background:linear-gradient(145deg,#171a1f,#0c0e11);
+  border-color:rgba(255,255,255,.1);transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .3s,box-shadow .3s
+}
+.mode::before{
+  content:"";position:absolute;inset:auto 15% 0;height:2px;
+  background:linear-gradient(90deg,transparent,#ff5965,transparent);
+  transform:scaleX(0);transition:transform .3s
+}
+.mode:hover,.mode.selected{
+  border-color:rgba(255,75,91,.75);color:#fff;
+  background:linear-gradient(145deg,rgba(79,21,31,.75),#111316);
+  box-shadow:0 12px 35px rgba(240,68,82,.12);transform:translateY(-5px)
+}
+.mode:hover::before,.mode.selected::before{transform:scaleX(1)}
+.mode i{transition:transform .35s,filter .35s}
+.mode:hover i{transform:translateY(-4px) scale(1.12);filter:drop-shadow(0 0 10px rgba(255,70,88,.7))}
+.table-header{background:linear-gradient(90deg,#251116,#17191d);color:#ff7580}
+.player-row{position:relative;transition:background .25s,transform .25s}
+.player-row:hover{background:rgba(240,68,82,.075);transform:translateX(3px)}
+.rank.first{color:#ffdb75}.rank.second{color:#d6e0e9}.rank.third{color:#d99a76}
+.tier{background:rgba(240,68,82,.1);color:#ff7781;border-color:rgba(240,68,82,.28)}
+.head-img{border-color:#f04452;box-shadow:0 0 15px rgba(240,68,82,.22);transition:transform .25s}
+.player-row:hover .head-img{transform:scale(1.08)}
+.event-card{position:relative;overflow:hidden}
+.event-card h3{color:#fff}
+.event-status{color:#ff8991;background:rgba(240,68,82,.09);border-color:rgba(240,68,82,.25)}
+.profile-modal{border-color:rgba(240,68,82,.4);box-shadow:0 0 80px rgba(240,68,82,.14)}
+.skin-container{background:radial-gradient(circle,rgba(240,68,82,.14),transparent 68%)}
+.discord-name{color:#ff7781}
+.profile-stat{background:rgba(255,255,255,.035);border-color:rgba(255,255,255,.08)}
+.profile-stat strong{color:#ff7781}
+footer{border-color:rgba(255,255,255,.08)}
+.community-section{
+  margin:10px 0 65px;padding:34px;border:1px solid rgba(88,101,242,.32);
+  border-radius:16px;background:
+  radial-gradient(circle at 85% 20%,rgba(88,101,242,.18),transparent 35%),
+  linear-gradient(135deg,#171a27,#0d0f15);
+  display:flex;align-items:center;justify-content:space-between;gap:25px;overflow:hidden
+}
+.community-copy{max-width:650px}
+.community-copy .eyebrow{color:#9ba7ff}
+.community-copy h2{font:800 clamp(22px,3vw,34px) Orbitron,sans-serif;margin-bottom:12px}
+.community-copy p{color:#aab0bd;line-height:1.7;font-size:13px}
+.discord-cta{
+  display:inline-flex;align-items:center;gap:12px;padding:15px 22px;border-radius:9px;
+  color:#fff;text-decoration:none;font-weight:900;letter-spacing:.5px;white-space:nowrap;
+  background:linear-gradient(135deg,#6575ff,#4752c4);box-shadow:0 10px 30px rgba(88,101,242,.24);
+  transition:transform .3s,box-shadow .3s
+}
+.discord-cta i{font-size:25px}
+.discord-cta:hover{transform:translateY(-4px);box-shadow:0 14px 38px rgba(88,101,242,.42)}
+@media(max-width:750px){
+  .community-section{align-items:flex-start;flex-direction:column;padding:25px}
+  .discord-cta{width:100%;justify-content:center}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+"""
+
+html = html.replace("</style>", premium_css + "\n</style>", 1)
+
+community = """
+<!-- DISCORD COMMUNITY -->
+<section class="container community-section" id="community">
+  <div class="community-copy">
+    <div class="eyebrow">JOIN THE COMMUNITY</div>
+    <h2>YOUR NEXT <span style="color:#9ba7ff">GG</span> STARTS HERE.</h2>
+    <p>Meet India's competitive Minecraft PvP community. Find teammates, join tournaments, follow tier updates and challenge the best players.</p>
+  </div>
+  <a class="discord-cta" href="https://discord.gg/" target="_blank" rel="noopener noreferrer">
+    <i class="fa-brands fa-discord" aria-hidden="true"></i>
+    JOIN OUR DISCORD
+  </a>
+</section>
+"""
+html = html.replace("</main>", community + "\n</main>", 1)
+
+# Replace the globe initializer with a blue Earth, blue orbital field, and orbiting moon.
+start = html.find("function createEarth() {")
+end = html.find("// =====================================\n// INITIALIZE WEBSITE", start)
+if start != -1 and end != -1:
+    earth_js = r'''function createEarth() {
+    const canvas = document.getElementById("earthCanvas");
+    if (!canvas || !window.THREE) return;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, canvas.clientWidth / canvas.clientHeight, 0.1, 100);
+    camera.position.z = 3.35;
+
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setClearColor(0x061a35, 0);
+
+    function resize() {
+        const width = canvas.clientWidth, height = canvas.clientHeight;
+        if (!width || !height) return;
+        renderer.setSize(width, height, false);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+    }
+    resize();
+    window.addEventListener("resize", resize);
+
+    const earthGroup = new THREE.Group();
+    scene.add(earthGroup);
+
+    const earthMaterial = new THREE.MeshPhongMaterial({
+        color: 0x79bfff,
+        shininess: 35,
+        specular: new THREE.Color(0x8ccfff)
+    });
+    const earth = new THREE.Mesh(new THREE.SphereGeometry(1, 96, 96), earthMaterial);
+    earthGroup.add(earth);
+
+    const textureLoader = new THREE.TextureLoader();
+    textureLoader.load(
+        "https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg",
+        texture => {
+            earthMaterial.map = texture;
+            earthMaterial.color.set(0x7dbfff);
+            earthMaterial.needsUpdate = true;
+        },
+        undefined,
+        () => console.warn("Earth texture unavailable; displaying blue globe.")
+    );
+
+    scene.add(new THREE.AmbientLight(0x8bbcff, 1.0));
+    const keyLight = new THREE.PointLight(0x55aaff, 2.7);
+    keyLight.position.set(3, 2, 4);
+    scene.add(keyLight);
+    const rimLight = new THREE.PointLight(0x176bff, 2.0);
+    rimLight.position.set(-4, -1, -3);
+    scene.add(rimLight);
+
+    const atmosphere = new THREE.Mesh(
+        new THREE.SphereGeometry(1.055, 80, 80),
+        new THREE.MeshBasicMaterial({
+            color: 0x168cff, transparent: true, opacity: .16, side: THREE.BackSide
+        })
+    );
+    earthGroup.add(atmosphere);
+
+    // Blue orbit ring behind the moon.
+    const orbit = new THREE.Mesh(
+        new THREE.TorusGeometry(1.48, .006, 8, 180),
+        new THREE.MeshBasicMaterial({ color: 0x3b9dff, transparent: true, opacity: .55 })
+    );
+    orbit.rotation.x = .68;
+    orbit.rotation.y = .18;
+    scene.add(orbit);
+
+    const moonOrbit = new THREE.Group();
+    scene.add(moonOrbit);
+    const moon = new THREE.Mesh(
+        new THREE.SphereGeometry(.115, 32, 32),
+        new THREE.MeshPhongMaterial({ color: 0xb8c8d9, shininess: 8 })
+    );
+    moon.position.set(1.48, 0, 0);
+    moonOrbit.add(moon);
+    const moonLight = new THREE.PointLight(0x8fc7ff, .45);
+    moonLight.position.set(1.4, .2, 1.2);
+    scene.add(moonLight);
+
+    const starsGeometry = new THREE.BufferGeometry();
+    const positions = [];
+    for (let i = 0; i < 650; i++) {
+        positions.push((Math.random() - .5) * 12, (Math.random() - .5) * 12, (Math.random() - .5) * 12);
+    }
+    starsGeometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+    const stars = new THREE.Points(starsGeometry, new THREE.PointsMaterial({
+        color: 0x8fcaff, size: .012, transparent: true, opacity: .8
+    }));
+    scene.add(stars);
+
+    let frame;
+    function animate() {
+        frame = requestAnimationFrame(animate);
+        earth.rotation.y += .0019;
+        earth.rotation.x = .08;
+        atmosphere.rotation.y -= .00035;
+        moonOrbit.rotation.y += .0042;
+        moonOrbit.rotation.x = .24;
+        stars.rotation.y += .00008;
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    document.addEventListener("visibilitychange", () => {
+        if (document.hidden) cancelAnimationFrame(frame);
+        else animate();
+    });
+}
+
+'''
+    html = html[:start] + earth_js + html[end:]
+
+# Update title and favicon hint while preserving the original page content.
+html = html.replace("<title>PVP INDIA | Minecraft PvP Rankings</title>",
+                    "<title>PVP INDIA | Competitive Minecraft PvP Network</title>")
+out = Path("/mnt/data/pvp-india-premium.html")
+out.write_text(html, encoding="utf-8")
+print(f"Created {out.name} ({len(html):,} characters).")
